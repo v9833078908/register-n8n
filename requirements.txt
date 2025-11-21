@@ -1,0 +1,40 @@
+# Core Dependencies
+python-telegram-bot==20.7
+openai==1.12.0
+anthropic==0.18.1
+youtube-transcript-api==0.6.2
+yt-dlp==2024.3.10
+requests==2.31.0
+feedparser==6.0.11
+
+# Database
+sqlalchemy==2.0.28
+alembic==1.13.1
+
+# Web Framework (for future FastAPI endpoints)
+fastapi==0.110.0
+uvicorn==0.27.1
+pydantic==2.6.3
+pydantic-settings==2.2.1
+
+# Testing
+pytest==8.0.2
+pytest-asyncio==0.23.5
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Utilities
+python-dotenv==1.0.1
+pyyaml==6.0.1
+python-dateutil==2.9.0
+
+# Type checking
+mypy==1.8.0
+types-requests==2.31.0.20240218
+types-PyYAML==6.0.12.12
+
+# Code quality
+black==24.2.0
+isort==5.13.2
+flake8==7.0.0
+pylint==3.1.0

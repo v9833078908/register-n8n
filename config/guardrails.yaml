@@ -1,0 +1,102 @@
+# Guardrails configuration for content quality checks
+
+# Transcript validation rules
+transcript_validation:
+  # Minimum length for transcript to be useful
+  min_length: 100  # characters
+
+  # Maximum length (to avoid processing errors)
+  max_length: 50000  # characters
+
+  # Minimum word count
+  min_word_count: 20  # words
+
+  # Maximum word count
+  max_word_count: 10000  # words
+
+  # Check for repetitive content (spam detection)
+  check_repetition: true
+  max_repetition_ratio: 0.5  # If >50% of text is repetitive, flag it
+
+  # Check for meaningful content (not just punctuation/symbols)
+  min_alpha_ratio: 0.5  # At least 50% should be letters
+
+  # Language detection (optional)
+  detect_language: true
+  allowed_languages: ["ru", "en"]  # Empty list = allow all
+
+# Post validation rules
+post_validation:
+  # Platform-specific limits
+  platform_limits:
+    threads:
+      max_length: 500
+      min_length: 20
+      max_hashtags: 5
+      max_emojis: 10
+
+  # Content quality checks
+  quality_checks:
+    # Check for spammy content
+    check_spam_patterns: true
+    spam_patterns:
+      - "!{3,}"  # Multiple exclamation marks (3 or more)
+      - "[А-ЯA-Z]{20,}"  # Long sequences of caps
+      - "(.)\\1{10,}"  # Character repeated >10 times
+
+    # Check for minimum meaningful content
+    min_alpha_ratio: 0.3  # At least 30% should be letters (rest can be emojis, punctuation)
+
+    # Check hashtag quality
+    max_hashtag_length: 30  # Single hashtag shouldn't be too long
+
+  # Optional checks (can be disabled)
+  optional_checks:
+    # Check for disclaimer (useful for educational content)
+    require_disclaimer: false
+    disclaimer_patterns:
+      - "это общая информация"
+      - "проконсультируйтесь"
+      - "for educational purposes"
+
+    # Check for call-to-action
+    suggest_cta: false
+
+# Severity scoring for violations
+severity_weights:
+  too_short: 8
+  too_long: 5
+  repetitive_content: 7
+  spam_detected: 9
+  insufficient_alpha: 6
+  language_not_allowed: 5
+  length_exceeded: 4
+
+# Moderation settings
+moderation:
+  # Block threshold (if total severity score exceeds this, block content)
+  block_threshold: 8
+
+  # Warning threshold (show warning but don't block)
+  warning_threshold: 5
+
+  # Auto-fix minor issues
+  auto_fix_enabled: true
+  auto_fixes:
+    - truncate_long_post  # Auto-truncate if slightly over limit
+    - remove_excessive_emojis  # Remove if >max_emojis
+    - trim_whitespace  # Clean up extra spaces
+
+# Logging settings
+logging:
+  log_violations: true
+  log_level: "INFO"
+  save_blocked_content: false
+  save_warnings: true
+
+# Testing mode (less strict for testing)
+testing_mode: false
+test_mode_settings:
+  min_length: 10
+  min_word_count: 3
+  block_threshold: 15
